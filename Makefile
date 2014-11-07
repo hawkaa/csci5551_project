@@ -1,9 +1,13 @@
 CXX=g++
 CXXINCLUDE = -I /usr/local/Aria/include
 CXXLIBS = -L/usr/local/Aria/lib -lAria -lArNetworking -lpthread -ldl
+BINDIR = bin/
 
-wander:
-	$(CXX) $(CXXINCLUDE) $(CXXLIBS) -o wander wander.cpp
+bin:
+	mkdir -p $(BINDIR)
+
+wander: bin
+	$(CXX) $(CXXINCLUDE) $(CXXLIBS) -o $(BINDIR)wander wander.cpp
 
 clean:
 	rm -rf wander
