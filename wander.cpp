@@ -40,12 +40,14 @@ Adept MobileRobots, 10 Columbia Drive, Amherst, NH 03031; +1-603-881-7960
  * ethernet-serial bridge.)
 */
 
-void
-connect(ArRobot &robot)
+ArRobot
+getRobot(void)
 {
+    ArRobot robot;
     ArSerialConnection serialConnection;
     ArTcpConnection tcpConnection;
-
+    
+    robot = ArRobot();
 
     if (tcpConnection.openSimple()) {
         robot.setDeviceConnection(&tcpConnection);
@@ -59,23 +61,11 @@ connect(ArRobot &robot)
 int main(int argc, char **argv)
 {
   Aria::init();
-  ArArgumentParser argParser(&argc, argv);
-  argParser.loadDefaultArguments();
-  ArRobot robot;
-  connect(robot);
+  
+  
+  ArRobot robot = getRobot();
 
 
-  // Trigger argument parsing
-  if (!Aria::parseArgs() || !argParser.checkHelpAndWarnUnparsed())
-  {
-    Aria::logOptions();
-    Aria::exit(1);
-    return 1;
-  }
-
-  ArKeyHandler keyHandler;
-  Aria::setKeyHandler(&keyHandler);
-  robot.attachKeyHandler(&keyHandler);
 
   puts("This program will make the robot wander around. It uses some avoidance\n"
   "actions if obstacles are detected, otherwise it just has a\n"
