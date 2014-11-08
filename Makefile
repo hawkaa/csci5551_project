@@ -4,6 +4,9 @@ CXXLIBS = -L/usr/local/Aria/lib -lAria -lArNetworking -lpthread -ldl
 BINDIR = bin/
 
 
+follow: bin
+	$(CXX) $(CXXINCLUDE) $(CXXLIBS) -o $(BINDIR)follow follow.cpp
+
 direct: bin
 	$(CXX) $(CXXINCLUDE) $(CXXLIBS) -o $(BINDIR)direct direct.cpp
 
