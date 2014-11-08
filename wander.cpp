@@ -66,7 +66,7 @@ int main(int argc, char **argv)
   //ArLaserConnector laserConnector(&argParser, &robot, &robotConnector);
 
   // Always try to connect to the first laser:
-  argParser.addDefaultArgument("-connectLaser");
+  //argParser.addDefaultArgument("-connectLaser");
 
   connect(robot);
 
@@ -87,8 +87,8 @@ int main(int argc, char **argv)
   "actions if obstacles are detected, otherwise it just has a\n"
   "constant forward velocity.\n\nPress CTRL-C or Escape to exit.");
   
-  ArSonarDevice sonar;
-  robot.addRangeDevice(&sonar);
+//   ArSonarDevice sonar;
+//  robot.addRangeDevice(&sonar);
 
   robot.runAsync(true);
 
