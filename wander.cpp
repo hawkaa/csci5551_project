@@ -61,30 +61,23 @@ getRobot(void)
 int main(int argc, char **argv)
 {
   Aria::init();
-  
-  
-  ArRobot robot = getRobot();
+  ArRobot robot;
 
-
-
-  puts("This program will make the robot wander around. It uses some avoidance\n"
-  "actions if obstacles are detected, otherwise it just has a\n"
-  "constant forward velocity.\n\nPress CTRL-C or Escape to exit.");
-  
-
+  ArSerialConnection serialConnection;
+  ArTcpConnection tcpConnection;
+    
+  if (tcpConnection.openSimple()) {
+    robot.setDeviceConnection(&tcpConnection);
+  } else {
+    serialConnection.setPort("/dev/ttyUSB0");
+    robot.setDeviceConnection(&serialConnection);
+  }
+  robot.blockingConnect();
+   
+  printf("Setting robot to run async\n");
   robot.runAsync(true);
 
-  puts("Are we here?");
-  
-  // try to connect to laser. if fail, warn but continue, using sonar only
-  /*if(!laserConnector.connectLasers())
-  {
-    ArLog::log(ArLog::Normal, "Warning: unable to connect to requested lasers, will wander using robot sonar only.");
-  } */
-
-
-  // turn on the motors, turn off amigobot sounds
-  //robot.enableMotors();
+  printf("Turning off sound\n");
   robot.comInt(ArCommands::SOUNDTOG, 0);
 
   // add a set of actions that combine together to effect the wander behavior
@@ -102,11 +95,8 @@ int main(int argc, char **argv)
   // wait for robot task loop to end before exiting the program
   //while (true);
   //robot.waitForRunExit();
-  puts("Here3");
   
-  while (true);
 
   Aria::exit(0);
-  puts("Here?");
   return 0;
 }
