@@ -109,27 +109,16 @@ int main(int argc, char **argv)
 {
   Aria::init();
   
-  /*ArArgumentParser argParser(&argc, argv);
-  argParser.loadDefaultArguments();*/
+  ArArgumentParser argParser(&argc, argv);
+  argParser.loadDefaultArguments();
 
 
   ArRobot robot;
-
-  ArSerialConnection serialConnection;
-  ArTcpConnection tcpConnection;
-    
-  if (tcpConnection.openSimple()) {
-    robot.setDeviceConnection(&tcpConnection);
-  } else {
-    serialConnection.setPort("/dev/ttyUSB0");
-    robot.setDeviceConnection(&serialConnection);
-  }
-  robot.blockingConnect();
-  //ArRobotConnector con(&argParser, &robot);
+  ArRobotConnector con(&argParser, &robot);
 
   // the connection handler from above
-  //ConnHandler ch(&robot);
-  
+  ConnHandler ch(&robot);
+
   if(!Aria::parseArgs())
   {
     Aria::logOptions();
@@ -137,7 +126,7 @@ int main(int argc, char **argv)
     return 1;
   }
 
-  /*if(!con.connectRobot())
+  if(!con.connectRobot())
   {
     ArLog::log(ArLog::Normal, "directMotionExample: Could not connect to the robot. Exiting.");
 
@@ -147,16 +136,15 @@ int main(int argc, char **argv)
 	}
     Aria::exit(1);
     return 1;
-  }*/
+  }
 
   ArLog::log(ArLog::Normal, "directMotionExample: Connected.");
-/*
+
   if(!Aria::parseArgs() || !argParser.checkHelpAndWarnUnparsed())
   {
     Aria::logOptions();
     Aria::exit(1);
   }
-  */
 
   // Run the robot processing cycle in its own thread. Note that after starting this
   // thread, we must lock and unlock the ArRobot object before and after
