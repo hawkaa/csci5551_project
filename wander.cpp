@@ -95,7 +95,7 @@ int main(int argc, char **argv)
 
   // turn on the motors, turn off amigobot sounds
   //robot.enableMotors();
-  robot.comInt(ArCommands::SOUNDTOG, 0);
+  //robot.comInt(ArCommands::SOUNDTOG, 0);
 
   // add a set of actions that combine together to effect the wander behavior
   /*ArActionStallRecover recover;
@@ -110,7 +110,7 @@ int main(int argc, char **argv)
   robot.addAction(&constantVelocity, 25);*/
   
   // wait for robot task loop to end before exiting the program
-  while (true);
+  //while (true);
   robot.waitForRunExit();
   
   Aria::exit(0);
