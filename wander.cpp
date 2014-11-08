@@ -110,6 +110,7 @@ int main(int argc, char **argv)
   robot.addAction(&constantVelocity, 25);*/
   
   // wait for robot task loop to end before exiting the program
+  while (true);
   robot.waitForRunExit();
   
   Aria::exit(0);
