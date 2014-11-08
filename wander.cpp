@@ -114,6 +114,6 @@ int main(int argc, char **argv)
   */
   
   Aria::exit(0);
-  puts("Here?")
+  puts("Here?");
   return 0;
 }
