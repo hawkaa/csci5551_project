@@ -110,6 +110,7 @@ int main(int argc, char **argv)
   Aria::init();
   
   ArArgumentParser argParser(&argc, argv);
+  argParser.addDefaultArgument("-rp /dev/ttyUSB0");
   argParser.loadDefaultArguments();
 
 
