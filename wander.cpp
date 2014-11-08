@@ -40,29 +40,6 @@ Adept MobileRobots, 10 Columbia Drive, Amherst, NH 03031; +1-603-881-7960
  * ethernet-serial bridge.)
 */
 
-ArRobotrLog::log(ArLog::Normal, "Warning: unable to connect to requested lasers, will wander using robot sonar only.");
-  } */
-
-
-    // turn on the motors, turn off amigobot sounds
-    //   //robot.enableMotors();
-    //
-getRobot(void)
-{
-    ArRobot robot;
-    ArSerialConnection serialConnection;
-    ArTcpConnection tcpConnection;
-    
-    robot = ArRobot();
-
-    if (tcpConnection.openSimple()) {
-        robot.setDeviceConnection(&tcpConnection);
-    } else {
-        serialConnection.setPort("/dev/ttyUSB0");
-        robot.setDeviceConnection(&serialConnection);
-    }
-    robot.blockingConnect();
-}
 
 int main(int argc, char **argv)
 {
