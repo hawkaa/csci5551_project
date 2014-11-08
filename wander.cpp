@@ -111,7 +111,7 @@ int main(int argc, char **argv)
   
   // wait for robot task loop to end before exiting the program
   //while (true);
-  robot.waitForRunExit();
+  //robot.waitForRunExit();
   puts("Here3");
   
   Aria::exit(0);
