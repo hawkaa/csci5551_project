@@ -40,7 +40,13 @@ Adept MobileRobots, 10 Columbia Drive, Amherst, NH 03031; +1-603-881-7960
  * ethernet-serial bridge.)
 */
 
-ArRobot
+ArRobotrLog::log(ArLog::Normal, "Warning: unable to connect to requested lasers, will wander using robot sonar only.");
+  } */
+
+
+    // turn on the motors, turn off amigobot sounds
+    //   //robot.enableMotors();
+    //
 getRobot(void)
 {
     ArRobot robot;
@@ -81,7 +87,7 @@ int main(int argc, char **argv)
   robot.comInt(ArCommands::SOUNDTOG, 0);
 
   // add a set of actions that combine together to effect the wander behavior
-  /*ArActionStallRecover recover;
+  ArActionStallRecover recover;
   ArActionBumpers bumpers;
   ArActionAvoidFront avoidFrontNear("Avoid Front Near", 225, 0);
   ArActionAvoidFront avoidFrontFar;
@@ -90,7 +96,7 @@ int main(int argc, char **argv)
   robot.addAction(&bumpers, 75);
   robot.addAction(&avoidFrontNear, 50);
   robot.addAction(&avoidFrontFar, 49);
-  robot.addAction(&constantVelocity, 25);*/
+  robot.addAction(&constantVelocity, 25);
   
   // wait for robot task loop to end before exiting the program
   //while (true);
