@@ -94,7 +94,7 @@ int main(int argc, char **argv)
 
 
   // turn on the motors, turn off amigobot sounds
-  robot.enableMotors();
+  //robot.enableMotors();
   robot.comInt(ArCommands::SOUNDTOG, 0);
 
   // add a set of actions that combine together to effect the wander behavior
