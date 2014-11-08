@@ -49,7 +49,7 @@ int main(int argc, char **argv)
   ArSerialConnection serialConnection;
   ArTcpConnection tcpConnection;
     
-  if (tcpConnection.openSimple()) {
+  if (tcpConnection.open("localhost", 8101)) {
     robot.setDeviceConnection(&tcpConnection);
   } else {
     serialConnection.setPort("/dev/ttyUSB0");
@@ -58,16 +58,16 @@ int main(int argc, char **argv)
   robot.blockingConnect();
    
   printf("Setting robot to run async\n");
-  robot.runAsync(true);
+  robot.runAsync(false);
 
   printf("Turning off sound\n");
   robot.comInt(ArCommands::SOUNDTOG, 0);
 
-  printf("Enabeling motors\n");
+  printf("Enabling motors\n");
   robot.enableMotors();
 
   // add a set of actions that combine together to effect the wander behavior
-  ArActionStallRecover recover;
+  /*ArActionStallRecover recover;
   ArActionBumpers bumpers;
   ArActionAvoidFront avoidFrontNear("Avoid Front Near", 225, 0);
   ArActionAvoidFront avoidFrontFar;
@@ -76,11 +76,20 @@ int main(int argc, char **argv)
   robot.addAction(&bumpers, 75);
   robot.addAction(&avoidFrontNear, 50);
   robot.addAction(&avoidFrontFar, 49);
-  robot.addAction(&constantVelocity, 25);
+  robot.addAction(&constantVelocity, 25);*/
+
+  printf("Locking\n");
+  robot.lock();
+  robot.setVel(100.0);
+  robot.unlock();
+  printf("Sleeping\n");
+  ArUtil::sleep(3*1000);
+  printf("Awake\n");
+
   
   // wait for robot task loop to end before exiting the program
   //while (true);
-  robot.waitForRunExit();
+  //robot.waitForRunExit();
   
 
   Aria::exit(0);
