@@ -62,12 +62,6 @@ int main(int argc, char **argv)
   ArArgumentParser argParser(&argc, argv);
   argParser.loadDefaultArguments();
   ArRobot robot;
-  //ArRobotConnector robotConnector(&argParser, &robot);
-  //ArLaserConnector laserConnector(&argParser, &robot, &robotConnector);
-
-  // Always try to connect to the first laser:
-  //argParser.addDefaultArgument("-connectLaser");
-
   connect(robot);
 
 
@@ -87,11 +81,10 @@ int main(int argc, char **argv)
   "actions if obstacles are detected, otherwise it just has a\n"
   "constant forward velocity.\n\nPress CTRL-C or Escape to exit.");
   
-//   ArSonarDevice sonar;
-//  robot.addRangeDevice(&sonar);
 
   robot.runAsync(true);
 
+  puts("Are we here?");
   
   // try to connect to laser. if fail, warn but continue, using sonar only
   /*if(!laserConnector.connectLasers())
@@ -119,6 +112,8 @@ int main(int argc, char **argv)
   // wait for robot task loop to end before exiting the program
   robot.waitForRunExit();
   */
+  
   Aria::exit(0);
+  puts("Here?")
   return 0;
 }
