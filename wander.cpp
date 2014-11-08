@@ -63,6 +63,9 @@ int main(int argc, char **argv)
   printf("Turning off sound\n");
   robot.comInt(ArCommands::SOUNDTOG, 0);
 
+  printf("Enabeling motors\n");
+  robot.enableMotors();
+
   // add a set of actions that combine together to effect the wander behavior
   ArActionStallRecover recover;
   ArActionBumpers bumpers;
