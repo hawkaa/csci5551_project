@@ -40,29 +40,35 @@ Adept MobileRobots, 10 Columbia Drive, Amherst, NH 03031; +1-603-881-7960
  * ethernet-serial bridge.)
 */
 
+void
+connect(ArRobot &robot)
+{
+    ArSerialConnection serialConnection;
+    ArTcpConnection tcpConnection;
+
+
+    if (tcpConnection.openSimple()) {
+        robot.setDeviceConnection(&tcpConnection);
+    } else {
+        serialConnection.setPort("/dev/ttyUSB0");
+        robot.setDeviceConnection(&serialConnection);
+    }
+    robot.blockingConnect();
+}
+
 int main(int argc, char **argv)
 {
   Aria::init();
   ArArgumentParser argParser(&argc, argv);
   argParser.loadDefaultArguments();
   ArRobot robot;
-  ArRobotConnector robotConnector(&argParser, &robot);
-  ArLaserConnector laserConnector(&argParser, &robot, &robotConnector);
+  //ArRobotConnector robotConnector(&argParser, &robot);
+  //ArLaserConnector laserConnector(&argParser, &robot, &robotConnector);
 
   // Always try to connect to the first laser:
   argParser.addDefaultArgument("-connectLaser");
 
-  if(!robotConnector.connectRobot())
-  {
-    ArLog::log(ArLog::Terse, "Could not connect to the robot.");
-    if(argParser.checkHelpAndWarnUnparsed())
-    {
-        // -help not given, just exit.
-        Aria::logOptions();
-        Aria::exit(1);
-        return 1;
-    }
-  }
+  connect(robot);
 
 
   // Trigger argument parsing
@@ -88,10 +94,10 @@ int main(int argc, char **argv)
 
   
   // try to connect to laser. if fail, warn but continue, using sonar only
-  if(!laserConnector.connectLasers())
+  /*if(!laserConnector.connectLasers())
   {
     ArLog::log(ArLog::Normal, "Warning: unable to connect to requested lasers, will wander using robot sonar only.");
-  }
+  } */
 
 
   // turn on the motors, turn off amigobot sounds
