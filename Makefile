@@ -5,7 +5,7 @@ BINDIR = bin/
 
 
 follow: bin
-	$(CXX) $(CXXINCLUDE) $(CXXLIBS) -o $(BINDIR)follow follow.cpp
+	$(CXX) $(CXXINCLUDE) $(CXXLIBS) -o $(BINDIR)follow follow.cpp geometry.cpp robolib.cpp
 
 direct: bin
 	$(CXX) $(CXXINCLUDE) $(CXXLIBS) -o $(BINDIR)direct direct.cpp
