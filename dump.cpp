@@ -9,7 +9,8 @@ run(ArRobot &robot, ArLaser *laser)
 {
   ArUtil::sleep(500); /* get some readings */
   std::vector<Point> *readings = RoboLib::getReadings(robot, laser);
-  RoboLib::dumpReadings(readings);
+  std::vector<LineSegments> *lineSegments = Geometry::getLineSegments(readings);
+  Geometry::dumpReadings(readings);
   delete readings;
 }
 

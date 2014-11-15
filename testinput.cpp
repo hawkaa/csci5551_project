@@ -8,7 +8,13 @@ int
 main(int argc, char **argv)
 {
   char *filename = argv[1];
-  std::vector<Point> *readings = RoboLib::getReadingsFromFile(filename);
-  RoboLib::dumpReadings(readings);
-  delete readings;
+  std::vector<Point> *points = Geometry::getPointsFromFile(filename);
+  Geometry::dumpPoints(points);
+  
+  std::vector<LineSegment> *lineSegments = Geometry::getLineSegments(points);
+  Geometry::dumpLineSegments(lineSegments);
+
+
+  delete points;
+  delete lineSegments;
 }

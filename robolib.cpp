@@ -24,26 +24,3 @@ RoboLib::getReadings(ArRobot &robot, ArLaser *laser)
   return readings;
 }
 
-void
-RoboLib::dumpReadings(std::vector<Point> *readings)
-{
-  for (int i = 0; i < readings->size(); ++i) {
-    printf("%f %f\n", readings->at(i).getX(), readings->at(i).getY()); 
-  }
-}
-
-std::vector<Point> *
-RoboLib::getReadingsFromFile(char *filename)
-{
-  char line[80];
-  double x, y;
-  std::vector<Point> *readings = new std::vector<Point>();
-  FILE *fh = fopen(filename, "r");
-  while (fgets(line, 80, fh) != NULL) {
-    sscanf(line, "%lf %lf\n", &x, &y);
-    Point p = Point(x, y);
-    readings->push_back(p);
-  }
-  fclose(fh);
-  return readings;
-}
