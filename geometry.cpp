@@ -51,19 +51,17 @@ LineSegment::getLength(void)
   return sqrt(pow(this->start->getX()-this->stop->getX(), 2) + pow(this->start->getY()-this->stop->getY(), 2));
 }
 
-Point *
+Point 
 LineSegment::getCenter(void)
 {
   double x = (start->getX() + stop->getX()) / 2.0;
   double y = (start->getY() + stop->getY()) / 2.0;
-  return new Point(x, y);
+  return Point(x, y);
 }
 
 std::vector<LineSegment> *
-Geometry::getLineSegments(std::vector<Point> *points)
+Geometry::getLineSegments(std::vector<Point> *points, double threshold)
 {
-  double DISTANCE_THRESHOLD = 300.0;
-
   double distance;
 
   std::vector<LineSegment> *lineSegments = new std::vector<LineSegment>();
@@ -74,7 +72,7 @@ Geometry::getLineSegments(std::vector<Point> *points)
   for (int i = i; i < points->size(); ++i) {
     distance = stopCandidate->distanceTo(&points->at(i));
     //printf("%d\n", distance);
-    if (distance >= DISTANCE_THRESHOLD) {
+    if (distance >= threshold) {
       /* save the line segment if it's not 0 */
       if (startCandidate != stopCandidate) {
         lineSegments->push_back(LineSegment(startCandidate, stopCandidate));  
@@ -82,7 +80,6 @@ Geometry::getLineSegments(std::vector<Point> *points)
       startCandidate = &points->at(i); 
     }  
     stopCandidate = &points->at(i);
-    //printf("Distance between (%f, %f) and (%f, %f): %f\n", stopCandidate->getX(), stopCandidate->getY(), points->at(i).getX(), points->at(i).getY(), distanceTo);
   }
 
   if (startCandidate != stopCandidate) {
@@ -90,67 +87,51 @@ Geometry::getLineSegments(std::vector<Point> *points)
   }
   return lineSegments;
 
-  //define initial starting vector location for distance analysis
-  double startpoint = 0;
+}
 
-  //calculate distances between points and detirmine if line segment
-  for (double endpoint = 1; endpoint < points->size(); endpoint++){
-    LineSegment intermediatesegment(&points->at(endpoint-1), &points->at(endpoint));
-
-    //define condition at which the distance between consecutive points is large
-    //enough to be considered a seperate line
-    if (intermediatesegment.getLength() > 10000){
-      LineSegment discoveredsegment(&points->at(startpoint), &points->at(endpoint - 1));
-      LineSegment Savedsegment = discoveredsegment;
-    //	if (discoveredsegment.)
-      //test to see if discovered line segment consists of consecutive points, if so do not add to linesegment vector
-      if ((endpoint - 1) - startpoint > 1){
-        std::cout << "start" << points->at(startpoint).getX() << ", " << points->at(startpoint).getY() << std::endl;
-        std::cout << "end" << points->at(endpoint - 1).getX() << ", " << points->at(endpoint - 1).getY() << std::endl;
-        lineSegments->push_back(discoveredsegment);
-      }
-      startpoint = endpoint;
+void 
+Geometry::filterByLength(std::vector<LineSegment> *lineSegments, double min, double max)
+{
+  double length;
+  
+  int i = 0;
+  
+  while (i < lineSegments->size()) {
+    length = lineSegments->at(i).getLength();
+    if (length <= min || length >= max) {
+      lineSegments->erase(lineSegments->begin() + i); 
+    } else {
+      ++i;
     }
+  }
+}
 
+std::vector<Point> *
+Geometry::getCentroids(std::vector<LineSegment> *lineSegments)
+{
+  std::vector<Point> *centroids = new std::vector<Point>();
+  for (int i = 0; i < lineSegments->size(); ++i) {
+    centroids->push_back(lineSegments->at(i).getCenter());
+  }
+  return centroids;
+}
 
-    //add in condition for when the loop reaches the end of the Points vector to conclude last line segment
-    if (endpoint == points->size() - 1){
-      LineSegment finalsegment(&points->at(startpoint), &points->at(endpoint));
-      //test to see if discovered line segment consists of consecutive points, if so do not add to linesegment vector
-      if (endpoint-startpoint > 1){
-        std::cout << "start" << points->at(startpoint).getX() << ", " << points->at(startpoint).getY() << std::endl;
-        std::cout << "end" << points->at(endpoint - 1).getX() << ", " << points->at(endpoint - 1).getY() << std::endl;
-        lineSegments->push_back(finalsegment);
+std::vector<LineSegment> *
+Geometry::getLegs(std::vector<Point> *centroids, double min, double max)
+{ 
+  double distance;
+  std::vector<LineSegment> *legs = new std::vector<LineSegment>();
+  for (int i = 0; i < centroids->size(); ++i) {
+    for(int j = i + 1; j < centroids->size(); ++j) {
+      distance = centroids->at(i).distanceTo(&centroids->at(j));
+      printf("Distance between %d and %d: %f\n", i, j, distance);
+      if (distance >= min && distance <= max) {
+        legs->push_back(LineSegment(&centroids->at(i), &centroids->at(j)));
       }
     }
   }
-  return lineSegments;
-  //display values of length and Center
- 
- /*
-  for (double linesample = 0; linesample < LineSegments.size(); linesample++){
-    std::cout << "Length= " << LineSegments[linesample].getlength() << " Center="<<LineSegments[linesample].getcenter().getx() << ", " << LineSegments[linesample].getcenter().gety()<<std::endl;
-  }
 
-  std::cout << std::endl;
- */ 
- /*
-  //test to see if the center of two line segments is within desired seperation
-  for (double firstlinesegment = 0; firstlinesegment < LineSegments.size()-1; firstlinesegment++){
-    for (double secondlinesegment = firstlinesegment+1; secondlinesegment < LineSegments.size(); secondlinesegment++){
-      LineSegment segmentseperation;
-      segmentseperation.DefineLineSegment(&LineSegments[firstlinesegment].getcenter(), &LineSegments[secondlinesegment].getcenter());
-      if (10<segmentseperation.getlength() && segmentseperation.getlength()<10){
-        PotentialCandidates.push_back(segmentseperation);
-        //display information on potential linesegments for leg detection
-      //	std::cout << "Length= " << segmentseperation.getlength() << " Center=" << segmentseperation.getcenter().getx() << ", " << segmentseperation.getcenter().gety() << std::endl;
-      }
-    }
-  }	
-  std::cout << std::endl;
-  //
-  //std::cout << "Length= 37.5 Center=231.25, 350";
-  // */
+  return legs;
 }
 
 void
