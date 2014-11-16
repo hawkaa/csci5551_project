@@ -1,1 +1,11 @@
 bin/
+*.o
+testinput
+dump
+follow
+legs.txt
+length_linesegments.txt
+linesegments.txt
+plotroom
+points.txt
+robot.txt
