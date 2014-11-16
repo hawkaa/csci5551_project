@@ -10,7 +10,6 @@ RoboLib::getReadings(ArRobot &robot, ArLaser *laser)
   laser->lockDevice();
   raw_readings = laser->getRawReadings();
   std::list<ArSensorReading *>::const_iterator it;
-
   if (raw_readings != NULL) {
     if ((raw_readings->end() != raw_readings->begin())) {
       for (it = raw_readings->begin(); it != raw_readings->end(); it++) {

@@ -127,6 +127,7 @@ Geometry::getLegs(std::vector<Point> *centroids, double min, double max)
       printf("Distance between %d and %d: %f\n", i, j, distance);
       if (distance >= min && distance <= max) {
         legs->push_back(LineSegment(&centroids->at(i), &centroids->at(j)));
+        ++i; ++j;
       }
     }
   }
@@ -135,15 +136,17 @@ Geometry::getLegs(std::vector<Point> *centroids, double min, double max)
 }
 
 void
-Geometry::dumpPoints(std::vector<Point> *points)
+Geometry::dumpPoints(std::vector<Point> *points, FILE *fh)
 {
   for (int i = 0; i < points->size(); ++i) {
     printf("%f %f\n", points->at(i).getX(), points->at(i).getY()); 
+    if (fh != NULL)
+      fprintf(fh, "%f %f\n", points->at(i).getX(), points->at(i).getY()); 
   }
 }
 
 void
-Geometry::dumpLineSegments(std::vector<LineSegment> *lineSegments)
+Geometry::dumpLineSegments(std::vector<LineSegment> *lineSegments, FILE *fh)
 {
   for (int i = 0; i < lineSegments->size(); ++i) {
     printf("Start: %f %f \t Stop: %f %f, Length: %f\n", 
@@ -153,6 +156,11 @@ Geometry::dumpLineSegments(std::vector<LineSegment> *lineSegments)
       lineSegments->at(i).getStop()->getY(),
       lineSegments->at(i).getLength()
     );
+    if (fh != NULL) {
+      fprintf(fh, "%f %f\n", lineSegments->at(i).getStart()->getX(), lineSegments->at(i).getStart()->getY()); 
+      fprintf(fh, "%f %f\n", lineSegments->at(i).getStop()->getX(), lineSegments->at(i).getStop()->getY()); 
+      fprintf(fh, "\n");
+    }
   }
 
 }

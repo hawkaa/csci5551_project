@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <cstdio>
 
 class Point {
   private:
@@ -26,8 +27,8 @@ class LineSegment {
 class Geometry {
   public:
     static std::vector<Point> * getPointsFromFile(char *filename);
-    static void dumpPoints(std::vector<Point> *points);
-    static void dumpLineSegments(std::vector<LineSegment> *lineSegments);
+    static void dumpPoints(std::vector<Point> *points, FILE *fh);
+    static void dumpLineSegments(std::vector<LineSegment> *lineSegments, FILE *fh);
 
     static std::vector<LineSegment> *
     getLineSegments(std::vector<Point> *points, double threshold);

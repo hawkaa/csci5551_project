@@ -31,5 +31,6 @@ main(int argc, char **argv)
 
   delete points;
   delete lineSegments;
+  delete centroids;
   delete legs;
 }

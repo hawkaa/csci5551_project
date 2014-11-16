@@ -1,6 +1,7 @@
 int
 main(int argc, char **argv) 
 {
+  printf("start");
   Aria::init();
   
   ArArgumentParser argParser(&argc, argv);
