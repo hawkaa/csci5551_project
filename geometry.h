@@ -7,6 +7,7 @@ class Point {
   private:
     double x, y;
   public:
+    Point();
     Point(double, double);
     double getX(void);
     double getY(void);
@@ -38,5 +39,8 @@ class Geometry {
     getLegs(std::vector<Point> *centroids, double min, double max);
     static std::vector<Point> *
     getCentroids(std::vector<LineSegment> *lineSegments);
+
+    static Point *
+    getClosest(std::vector<LineSegment> *lineSegments, Point *);
 };
 

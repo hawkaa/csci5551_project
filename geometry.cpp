@@ -2,6 +2,9 @@
 #include <cstdio>
 #include <iostream>
 #include "geometry.h"
+
+Point::Point(){}
+
 Point::Point(double x, double y)
 {
   this->x = x;
@@ -181,3 +184,25 @@ Geometry::getPointsFromFile(char *filename)
   return readings;
 }
 
+Point *
+Geometry::getClosest(std::vector<LineSegment> *lineSegments, Point *origin)
+{
+  double distance = 0.0;
+  Point *closest = NULL;
+  Point center;
+  for (int i = 0; i < lineSegments->size(); ++i) {
+    center = lineSegments->at(i).getCenter();
+    if (closest == NULL) {
+      distance = center.distanceTo(origin);
+      closest = new Point(center.getX(), center.getY());
+    } else {
+      if (center.distanceTo(origin) < distance) {
+        distance = center.distanceTo(origin);
+        delete closest;
+        closest = new Point(center.getX(), center.getY());
+      }
+    }
+  }
+  return closest;
+
+}
