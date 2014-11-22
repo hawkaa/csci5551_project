@@ -66,15 +66,13 @@ std::vector<LineSegment> *
 Geometry::getLineSegments(std::vector<Point> *points, double threshold)
 {
   double distance;
-
   std::vector<LineSegment> *lineSegments = new std::vector<LineSegment>();
 
   Point *startCandidate = &points->at(0);
   Point *stopCandidate = &points->at(0);
   
-  for (int i = i; i < points->size(); ++i) {
+  for (int i = 0; i < points->size(); ++i) {
     distance = stopCandidate->distanceTo(&points->at(i));
-    //printf("%d\n", distance);
     if (distance >= threshold) {
       /* save the line segment if it's not 0 */
       if (startCandidate != stopCandidate) {
@@ -127,7 +125,6 @@ Geometry::getLegs(std::vector<Point> *centroids, double min, double max)
   for (int i = 0; i < centroids->size(); ++i) {
     for(int j = i + 1; j < centroids->size(); ++j) {
       distance = centroids->at(i).distanceTo(&centroids->at(j));
-      printf("Distance between %d and %d: %f\n", i, j, distance);
       if (distance >= min && distance <= max) {
         legs->push_back(LineSegment(&centroids->at(i), &centroids->at(j)));
         ++i; ++j;

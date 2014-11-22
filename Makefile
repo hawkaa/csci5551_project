@@ -2,6 +2,9 @@ CXX=g++
 CXXINCLUDE = -I /usr/local/Aria/include
 CXXLIBS = -L/usr/local/Aria/lib -lAria -lArNetworking -lpthread -ldl
 
+follow: robolib.o geometry.o follow.cpp
+	$(CXX) $(CXXINCLUDE) $(CXXLIBS) -o follow  follow.cpp robolib.o geometry.o
+
 plotroom: robolib.o geometry.o plotroom.cpp
 	$(CXX) $(CXXINCLUDE) $(CXXLIBS) -o plotroom plotroom.cpp robolib.o geometry.o
 
