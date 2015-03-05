@@ -5,16 +5,16 @@
 #include "robolib.h"
 #include "geometry.h"
 
-const static double KISS_HOUGH_TRESHOLD = 100.0;
-const static double SEGMENT_LENGTH_MINIMUM = 110.0;
-const static double SEGMENT_LENGTH_MAXIMUM = 200.0;
+const static double KISS_HOUGH_TRESHOLD = 80.0;
+const static double SEGMENT_LENGTH_MINIMUM = 95.0;
+const static double SEGMENT_LENGTH_MAXIMUM =150.0;
 const static double KISS_MATCH_MINIMUM = 50.0;
 const static double KISS_MATCH_MAXIMUM = 300.0;
 const static double ZONE_0_PERIMITER = 1000.0;
 const static double ZONE_1_PERIMITER = 1200.0;
-const static double ZONE_2_PERIMITER = 3000.0;
-const static double LOW_SPEED_TIER = 300.0;
-const static double HIGH_SPEED_TIER = 750.0;
+const static double ZONE_2_PERIMITER = 2000.0;
+const static double LOW_SPEED_TIER = 350.0;
+const static double HIGH_SPEED_TIER = 1000.0;
 
 static Point *
 getPosition(ArRobot &robot)
@@ -93,8 +93,6 @@ run(ArRobot &robot, ArLaser *laser)
       /* print data */
       printf("Found legs at (%f, %f)\n", closest->getX(), closest->getY()); 
 
-      /* reset */
-      robot.moveTo(ArPose(0.0, 0.0, 0.0));
        
       /* calculate intermediate point */
       actualDistance = origin->distanceTo(closest);
@@ -112,6 +110,8 @@ run(ArRobot &robot, ArLaser *laser)
       travelDistance = actualDistance - ZONE_0_PERIMITER;
       if (travelDistance > ZONE_1_PERIMITER - ZONE_0_PERIMITER) {
         printf("ZONE 2+\n");
+        /* reset */
+        robot.moveTo(ArPose(0.0, 0.0, 0.0));
         gotoAction.setGoal(ArPose((travelDistance / actualDistance) * closest->getX(), (travelDistance / actualDistance) * closest->getY()));
 
       } else if (travelDistance <= 0.0) {
